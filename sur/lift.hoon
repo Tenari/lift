@@ -1,7 +1,9 @@
 |%
 +$  opt-t           ?(~ @t)
++$  opt-rs          ?(~ @rs)
 +$  weight-unit     ?(%lbs %kg)
-+$  exercise-mode   ?(%reps %hold)
++$  distance-unit   ?(%in %ft %mi %cm %m %km)
++$  exercise-mode   ?(%reps %hold %dist)
 :: barbell, dumbell, kettlebell, band, none, other
 +$  equipment-type  ?(%bb %db %kb %bd %x %ot)
 :: name and meta-data about a kind of thing you could actually do as a `lift`
@@ -14,7 +16,11 @@
   ==
 :: a lift is a record of an exercise you did during a workout
 +$  lift      [exercise-id=@ sets=(list lift-set) details=(map @tas detail)]
-+$  lift-set  [mode=exercise-mode reps=@ud weight=@rs rir=@ud =weight-unit duration=@dr]
++$  lift-set
+  $?  [mode=exercise-mode reps=@ud weight=@rs rir=@ud =weight-unit]               :: mode=%reps
+      [mode=exercise-mode weight=opt-rs =weight-unit duration=@dr]                :: mode=%hold
+      [mode=exercise-mode weight=opt-rs =weight-unit distance=@rs =distance-unit] :: mode=%dist
+  ==
 +$  workout   [lifts=(list lift) start=@da end=@da]
 +$  history   (list workout)
 +$  action
