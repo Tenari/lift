@@ -1,0 +1,11 @@
+:~  
+    title+'Lift'
+    info+'A personal workout tracker and planner'
+    color+0xce.bef0
+    base+'lift'
+    version+[0 1 1]
+    website+'https://github.com/Tenari/lift'
+    license+'MIT'
+    glob-ames+[~holnes 0v0]
+    image+'https://raw.githubusercontent.com/Tenari/lift/master/frontend/assets/tile.svg'
+==

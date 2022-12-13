@@ -1,0 +1,35 @@
+<html>
+  <head>
+    <title>Lift moar</title>
+    <script src="file:///Users/tenari/urbit/jslift/lift.js"></script>
+    <style>
+.hide {
+  display: none;
+}
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <a href="#">track</a>
+      <a href="#plan">plan</a>
+      <a href="#history">history</a>
+      <a href="#share">share</a>
+      <a href="#settings">settings</a>
+    </div>
+    <div id="app">
+      <div class="page hide start-workout">
+        <button class="start-planned-workout">Start planned workout</button>
+        <button class="start-freeform-workout">Start freeform workout</button>
+      </div>
+      <div class="page hide ongoing-workout">
+        <div>current workout started at <span></span></div>
+        <button class="add-new-lift-to-workout">+ add</button>
+        <ul class="lifts-in-current-workout"></ul>
+      </div>
+      <div class="page hide history">
+        Workouts:
+        <ul class="workouts-list"></ul>
+      </div>
+    </div>
+  </body>
+</html>
