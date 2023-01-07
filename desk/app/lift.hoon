@@ -1,14 +1,6 @@
 /-  *lift
-/+  default-agent, dbug
-|%
-+$  versioned-state
-  $%  state-0
-  ==
-+$  state-0
-  $:  [%0 history=(list @)]
-  ==
-+$  card  card:agent:gall
---
+/+  default-agent, dbug, lift-exercises, lift-actions
+
 %-  agent:dbug
 =|  state-0
 =*  state  -
@@ -16,7 +8,11 @@
 |_  =bowl:gall
 +*  this     .
     default  ~(. (default-agent this %|) bowl)
-++  on-init   on-init:default
+++  on-init
+  ^-  (quip card _this)
+  =.  exercises.state  (default-exercise-list:lift-exercises bowl)
+  :_  this
+  ~ :: list of cards goes here if we want to subscribe to anything (like maybe to pals?)
 ++  on-save   !>(state)
 ++  on-load
   |=  old=vase
@@ -27,27 +23,22 @@
   ^-  (quip card _this)
   ?>  ?=(%lift-action mark)
   =/  act  !<(action vase)
-  ?-    -.act
-      %push
-    ?:  =(our.bowl target.act)
-      `this(values [value.act values])
-    ?>  =(our.bowl src.bowl)
-    :_  this
-    [%pass /pokes %agent [target.act %lift] %poke mark vase]~
-  ::
-      %pop
-    ?:  =(our.bowl target.act)
-      `this(values ?~(values ~ t.values))
-    ?>  =(our.bowl src.bowl)
-    :_  this
-    [%pass /pokes %agent [target.act %lift] %poke mark vase]~
+  ?.  =(our.bowl target.act)  !!
+  =^  cards  state
+  ?-  -.act
+    %start-workout :: needs to return a list of cards and a new state
+      (start-workout:lift-actions state bowl)
+    %end-workout
+      (end-workout:lift-actions state bowl)
   ==
+  [cards this]
 ::
 ++  on-peek
   |=  =path
   ^-  (unit (unit cage))
   ?+  path  (on-peek:default path)
-    [%x %values ~]  ``noun+!>(values)
+    [%x %history ~]
+      ``noun+!>(history)
   ==
 ++  on-arvo   on-arvo:default
 ++  on-watch  on-watch:default
