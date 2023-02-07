@@ -1,5 +1,5 @@
 /-  *lift
-/+  default-agent, dbug, lift-exercises, lift-actions
+/+  default-agent, dbug, lift-exercises, pokes=lift-actions
 
 %-  agent:dbug
 =|  state-0
@@ -11,6 +11,7 @@
 ++  on-init
   ^-  (quip card _this)
   =.  exercises.state  (default-exercise-list:lift-exercises bowl)
+  =.  defaults.state  [%lbs %mi]
   :_  this
   ~ :: list of cards goes here if we want to subscribe to anything (like maybe to pals?)
 ++  on-save   !>(state)
@@ -23,13 +24,17 @@
   ^-  (quip card _this)
   ?>  ?=(%lift-action mark)
   =/  act  !<(action vase)
-  ?.  =(our.bowl target.act)  !!
+  ?>  =(our.bowl src.bowl)
   =^  cards  state
   ?-  -.act
     %start-workout :: needs to return a list of cards and a new state
-      (start-workout:lift-actions state bowl)
+      (start-workout:pokes state bowl)
     %end-workout
-      (end-workout:lift-actions state bowl)
+      (end-workout:pokes state bowl)
+    %add-lift
+      (add-lift:pokes +.act state bowl)
+    %add-set
+      (add-set:pokes +.act state bowl)
   ==
   [cards this]
 ::
@@ -39,6 +44,8 @@
   ?+  path  (on-peek:default path)
     [%x %history ~]
       ``noun+!>(history)
+    [%x %exercises ~]
+      ``noun+!>(exercises)
   ==
 ++  on-arvo   on-arvo:default
 ++  on-watch  on-watch:default
