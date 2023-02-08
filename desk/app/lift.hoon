@@ -45,7 +45,7 @@
     [%x %history ~]
       ``noun+!>(history)
     [%x %exercises ~]
-      ``noun+!>(exercises)
+      ``exercises+!>(exercises)
   ==
 ++  on-arvo   on-arvo:default
 ++  on-watch  on-watch:default

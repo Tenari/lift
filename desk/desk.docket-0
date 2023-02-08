@@ -6,6 +6,6 @@
     version+[0 1 1]
     website+'https://github.com/Tenari/lift'
     license+'MIT'
-    glob-ames+[~holnes 0v0]
+    glob-ames+[~zod 0v0]
     image+'https://raw.githubusercontent.com/Tenari/lift/master/frontend/assets/tile.svg'
 ==

@@ -6,7 +6,7 @@
 +$  state-0
   $:  [%0 =history =exercises defaults=[=weight-unit =distance-unit]]
   ==
-+$  ex-id           [=ship @ud]
++$  ex-id           [=ship num=@ud]
 +$  weight-unit     ?(%lbs %kg)
 +$  distance-unit   ?(%in %ft %mi %cm %m %km)
 +$  exercise-mode   ?(%reps %hold %dist)

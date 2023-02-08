@@ -1,22 +1,17 @@
-function getAgentState() {
-  // TODO call to urbit for this information
-  State = {
-    history: [],
-    plans: [],
-    exercises: {
-      1 : {
-        id: 1,
-        name: "Bench Press",
-        mode: "reps",
-        equ: "bb",
-        img: "https://i.imgur.com/tE9ejXE.jpg",
-        description: 'Lay on flat bench; press barbell upward from chest.',
-        demonstration: 'https://www.youtube.com/watch?v=vcBig73ojpE'
-      }
-    }
-  }
-}
+const api = new UrbitHttpApi.Urbit("", "", "lift");
+api.ship = window.ship;
+async function getAgentState() {
+  var es = await api.scry({app: "lift", path: "/exercises"});
+  console.log(es);
+  State.exercises = {};
 
+  es.map(e => {
+    e.id = ""+e.id.num + e.id.ship;
+    return e;
+  }).forEach(e => {
+    State.exercises[e.id] = e;
+  })
+}
 let State = {history: [], exercises: [], plans: []};
 function startNewWorkout() {
   // TODO call to urbit, get response of new workout object
@@ -102,7 +97,6 @@ function render(path) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  getAgentState();
   render(window.location.hash.substr(1));
   window.addEventListener('hashchange', (event) => {
     render(window.location.hash.substr(1));
@@ -111,6 +105,7 @@ document.addEventListener("DOMContentLoaded", () => {
   for (fn of setup) {
     fn();
   }
+  getAgentState();
 });
 
 /*
