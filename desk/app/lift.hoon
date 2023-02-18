@@ -1,5 +1,5 @@
 /-  *lift
-/+  default-agent, dbug, lift-exercises, pokes=lift-actions
+/+  default-agent, dbug, lift-exercises, pokes=lift-actions, httplib=lift-http
 
 %-  agent:dbug
 =|  state-0
@@ -13,7 +13,8 @@
   =.  exercises.state  (default-exercise-list:lift-exercises bowl)
   =.  defaults.state  [%lbs %mi]
   :_  this
-  ~ :: list of cards goes here if we want to subscribe to anything (like maybe to pals?)
+  :~  [%pass /eyre/connect %arvo %e %connect `/apps/lift %lift]
+  ==
 ++  on-save   !>(state)
 ++  on-load
   |=  old=vase
@@ -22,7 +23,11 @@
 ++  on-poke
   |=  [=mark =vase]
   ^-  (quip card _this)
-  ?>  ?=(%lift-action mark)
+  ?:  =(%handle-http-request mark)
+    =^  cards  state
+    (handle:httplib !<([@ta =inbound-request:eyre] vase) state bowl) :: returns [cards state]
+    [cards this]
+  ?>  =(%lift-action mark)
   =/  act  !<(action vase)
   ?>  =(our.bowl src.bowl)
   =^  cards  state
@@ -43,12 +48,18 @@
   ^-  (unit (unit cage))
   ?+  path  (on-peek:default path)
     [%x %history ~]
-      ``noun+!>(history)
+      ``history+!>(history)
     [%x %exercises ~]
       ``exercises+!>(exercises)
   ==
 ++  on-arvo   on-arvo:default
-++  on-watch  on-watch:default
+++  on-watch
+  |=  =path
+  ^-  (quip card _this)
+  ?+    path  (on-watch:default path)
+    [%http-response *]
+      `this
+  ==
 ++  on-leave  on-leave:default
 ++  on-agent  on-agent:default
 ++  on-fail   on-fail:default

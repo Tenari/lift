@@ -1,8 +1,14 @@
+const NULL_DATE = 946684800000;
 const api = new UrbitHttpApi.Urbit("", "", "lift");
 api.ship = window.ship;
 async function getAgentState() {
+  var h = await api.scry({app: "lift", path: "/history"});
+  State.history = h.map( w => ({
+    lifts: w.lifts,
+    start: new Date(w.start),
+    end: w.end === NULL_DATE ? null : new Date(w.end)
+  }))
   var es = await api.scry({app: "lift", path: "/exercises"});
-  console.log(es);
   State.exercises = {};
 
   es.map(e => {
@@ -12,8 +18,23 @@ async function getAgentState() {
     State.exercises[e.id] = e;
   })
 }
-let State = {history: [], exercises: [], plans: []};
+let State = {page: "root", history: [], exercises: [], plans: []};
+const setState = (key, val) => {
+  console.log('setting state');
+  State[key] = val;
+  const stateChangedEvent = new CustomEvent("statechanged", {detail:{ key, val }});
+  window.dispatchEvent(stateChangedEvent);
+}; 
 function startNewWorkout() {
+  api.poke({
+    app: 'lift',
+    mark: 'lift-action',
+    json: {
+      "start-workout": "~"+api.ship,
+    },
+  }).then(r=>{
+    console.log('r',r);
+  })
   // TODO call to urbit, get response of new workout object
   State.history.push({
     lifts: [],
@@ -22,10 +43,10 @@ function startNewWorkout() {
   })
 }
 const Renderers = {
-  "" : () => {
+  "root" : () => {
     // if there is a workout ongoing
     if (State.history.length > 0 && State.history[0].end === null) {
-      window.location.hash = "ongoing-workout";
+      setState('page', "ongoing-workout");
     } else {
       const page = document.querySelector(".page.start-workout");
       page.classList.toggle("hide", false);
@@ -35,7 +56,7 @@ const Renderers = {
   "ongoing-workout" : () => {
     // if there is not a workout ongoing go to start-workout page
     if (State.history.length === 0 || State.history[0].end !== null) {
-      window.location.hash = "";
+      setState('page', "root");
       return;
     }
 
@@ -72,7 +93,7 @@ const setup = [
     freeformBtn.addEventListener('click', (event) => {
       event.preventDefault();
       startNewWorkout();
-      window.location.hash = "ongoing-workout";
+      setState('page', "ongoing-workout");
     });
   },
   // setup ongoing-workout page
@@ -97,15 +118,19 @@ function render(path) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  render(window.location.hash.substr(1));
-  window.addEventListener('hashchange', (event) => {
-    render(window.location.hash.substr(1));
+  getAgentState();
+
+  render(State.page);
+  window.addEventListener('statechanged', (event) => {
+    console.log(event);
+    if (event.detail.key === 'page') {
+      render(event.detail.val);
+    }
   });
 
   for (fn of setup) {
     fn();
   }
-  getAgentState();
 });
 
 /*

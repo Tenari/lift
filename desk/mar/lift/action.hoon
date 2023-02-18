@@ -1,4 +1,5 @@
 /-  *lift
+/+  lib=lift-json
 |_  act=action
 ++  grow
   |%
@@ -7,6 +8,7 @@
 ++  grab
   |%
   ++  noun  action
+  ++  json  action:dejs:lib
   --
 ++  grad  %noun
 --

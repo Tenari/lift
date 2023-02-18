@@ -1,16 +1,16 @@
 /-  sur=lift
 /+  lib=lift-json
 ::
-|_  thing=exercises:sur
+|_  thing=history:sur
 ++  grad  %noun
 ++  grow
   |%
   ++  noun  thing
-  ++  json  (en-exercises:encode:lib thing)
+  ++  json  (en-workouts:encode:lib thing)
   --
 ::
 ++  grab
   |%
-  ++  noun  exercises:sur
+  ++  noun  history:sur
   --
 --

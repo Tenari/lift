@@ -100,32 +100,4 @@
       demonstration=''
       ==
   ==
-++  enjs
-  =,  enjs:format
-  |%
-    ++  ex-list :: encodes for on-watch
-      |=  lis=exercises
-      ^-  json
-      (ex-list:encode lis)
-  --
-++  encode
-  =,  enjs:format
-  |%
-    ++  ex-list
-      |=  =exercises
-      ^-  json
-      :-  %a
-      %+  turn  exercises
-        |=  =exercise
-        ^-  json
-        %-  pairs
-        :~  id+(pairs ~[ship+s+(scot %p ship.id.exercise) num+n+(scot %ud num.id.exercise)])
-            name+s+name.exercise
-            mode+s+mode.exercise
-            equipment+s+equ.exercise
-            img+s+img.exercise
-            description+s+description.exercise
-            demonstration+s+demonstration.exercise
-        ==
-    --
 --
