@@ -20,7 +20,7 @@ async function getAgentState() {
 }
 let State = {page: "root", history: [], exercises: [], plans: []};
 const setState = (key, val) => {
-  console.log('setting state');
+  console.log('setting state', key, val);
   State[key] = val;
   const stateChangedEvent = new CustomEvent("statechanged", {detail:{ key, val }});
   window.dispatchEvent(stateChangedEvent);
@@ -42,6 +42,18 @@ function startNewWorkout() {
     end: null
   })
 }
+
+function showList(elem, items, inner) {
+  let listHTML = "";
+  for (i of items) {
+    listHTML += "<li>"+(inner(i))+"</li>";
+  }
+  elem.innerHTML = listHTML;
+}
+function renderExercise(ex) {
+  return (ex.name||"")+" <img width='100' src=\""+ex.img+"\"/></li>";
+}
+
 const Renderers = {
   "root" : () => {
     // if there is a workout ongoing
@@ -65,28 +77,40 @@ const Renderers = {
     const workout = State.history[0];
     page.querySelector("span").innerHTML = workout.start.toLocaleTimeString();
 
-    let listHTML = "";
-    for (lift of workout.lifts) {
-      const ex = State.exercises[lift.id];
-      listHTML += "<li>"+ex.name+" <img width='100' src=\""+ex.img+"\"/></li>";
-    }
-    page.querySelector("ul.lifts-in-current-workout").innerHTML = listHTML;
+    showList(page.querySelector("ul.lifts-in-current-workout"), workout.lifts, function(lift) {
+      return renderExercise(State.exercises[lift.id]);
+    })
 
+  },
+  "exercises" : () => {
+    const page = document.querySelector(".page.exercises");
+    page.classList.toggle("hide", false);
+
+    showList(page.querySelector("ul.exercise-list"), Object.values(State.exercises), function(ex) {
+      return renderExercise(ex);
+    })
   },
   "history" : () => {
     const page = document.querySelector(".page.history");
     page.classList.toggle("hide", false);
 
-    let listHTML = "";
-    for (workout of State.history) {
-      listHTML += "<li>"+(workout.start.toDateString())+"</li>";
-    }
-    page.querySelector("ul.workouts-list").innerHTML = listHTML;
-
+    showList(page.querySelector("ul.workouts-list"), State.history, function(workout) {
+      return workout.start.toDateString()
+    })
   },
 };
 
 const setup = [
+  // setup top links
+  function() {
+    const links = document.querySelectorAll(".header a");
+    links.forEach(link => {
+      link.addEventListener('click', (event) => {
+        event.preventDefault();
+        setState('page', event.target.href.split('#')[1]);
+      });
+    })
+  },
   // setup start-workout page
   function() {
     const freeformBtn = document.querySelector(".page.start-workout button.start-freeform-workout");
@@ -105,7 +129,7 @@ const setup = [
       State.history[0].lifts.push({id: 1, sets: [], details: {}});
       render("ongoing-workout");
     });
-  }
+  },
 ];
 
 function render(path) {
@@ -132,30 +156,3 @@ document.addEventListener("DOMContentLoaded", () => {
     fn();
   }
 });
-
-/*
-function parseTemplates() {
-  let templates = {};
-  const container = document.getElementById("templates");
-  for (child of container.children) {
-    const name = child.id.substr(9);
-    templates[name] = child;
-  }
-  return templates;
-}
-
-function updateToMatchPath(templates) {
-  const path = window.location.hash.substr(1);
-  if (templates[path]) {
-    let raw = templates[path].innerHTML;
-    // handle calls to other templates
-    const matches = raw.match(/\{\{\s*([a-z\-]+)\s*\}\}/gi);
-    for (match of matches) {
-      const calledTemplateName = match.replace(/\{\{\s* ?/, "").replace(/\s*\}\}/, "");
-      if (templates[calledTemplateName]) {
-        raw = raw.replace(match, templates[calledTemplateName].innerHTML);
-      }
-    }
-    document.getElementById("app").innerHTML = raw;
-  }
-}*/
