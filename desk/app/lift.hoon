@@ -19,7 +19,10 @@
 ++  on-load
   |=  old=vase
   ^-  (quip card _this)
-  `this(state !<(state-0 old))
+  =.  exercises.state  (default-exercise-list:lift-exercises bowl)
+  =.  defaults.state  [%lbs %mi]
+  ::`this(state !<(state-0 old))
+  `this(state state)
 ++  on-poke
   |=  [=mark =vase]
   ^-  (quip card _this)

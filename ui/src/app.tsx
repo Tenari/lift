@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Urbit from '@urbit/http-api';
 import { RootPage } from './pages/root';
 import { ExercisesPage } from './pages/exercises';
+import { HistoryPage } from './pages/history';
 import { NavLink } from './components/navlink';
 import { getAgentState } from './helpers';
 
@@ -30,8 +31,9 @@ export function App() {
   if (!hist && !exercises) return <p>Loading...</p>;
 
   const PAGES = {
-    'root': () => <RootPage api={api} history={hist} refreshHistory={refreshHistory}/>,
+    'root': () => <RootPage api={api} history={hist} refreshHistory={refreshHistory} exercises={exercises}/>,
     'exercises': () => <ExercisesPage exercises={exercises}/>,
+    'history': () => <HistoryPage history={hist} exercises={exercises}/>,
   }
 
   console.log(hist, exercises);

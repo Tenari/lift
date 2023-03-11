@@ -11,6 +11,8 @@
     ++  decode
       %-  of
       :~  [%start-workout (se %p)]
+          [%end-workout (se %p)]
+          [%add-lift de-ex-id]
       ==
     ::
     ++  create-chat
@@ -18,6 +20,16 @@
       :~  [%metadata (om so)]
           [%type (se %tas)]
       ==
+    ::
+    ++  de-ex-id
+      %+  cu
+        path-to-ex-id
+      pa
+    ::
+    ++  path-to-ex-id
+      |=  p=path
+      ^-  ex-id
+      [`@p`(slav %p +2:p) `@ud`(rash +6:p dem)]
     --
   --
 ++  encode
@@ -27,7 +39,7 @@
       |=  =history
       ^-  json
       :-  %a
-      %+  turn  history
+      %+  turn  (flop history)
         |=  =workout
         ^-  json
         %-  pairs
@@ -35,6 +47,7 @@
             start+(time start.workout)
             end+?:(=(*@da end.workout) ~ (time end.workout))
         ==
+    ::
     ++  en-exercises
       |=  =exercises
       ^-  json
@@ -51,6 +64,7 @@
             description+s+description.exercise
             demonstration+s+demonstration.exercise
         ==
+    ::
     ++  en-ex-id
       |=  =ex-id
       ^-  json

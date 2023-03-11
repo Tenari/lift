@@ -30,7 +30,7 @@
       demonstration=''
       ==
   :*  id=[our.bowl 6]   name='Pullup'           mode=%reps  equ=%ot
-      img='https://i.imgur.com/vRgip4M.png'
+      img='https://i.imgur.com/TdpFR8c.gif'::img='https://i.imgur.com/vRgip4M.png'
       description=''
       demonstration=''
       ==
@@ -50,42 +50,42 @@
       demonstration=''
       ==
   :*  id=[our.bowl 10]  name='Weighted Tibialis Raise'  mode=%reps  equ=%ot
-      img=''
+      img='https://i.imgur.com/nbY2Z3Z.jpg'
       description=''
       demonstration=''
       ==
   :*  id=[our.bowl 11]  name='Wall Tibialis Raise'      mode=%reps  equ=%x
-      img=''
+      img='https://i.imgur.com/PbJggi5.png'
       description=''
       demonstration=''
       ==
   :*  id=[our.bowl 12]  name='Ab Roller'      mode=%dist  equ=%ot
-      img=''
+      img='https://i.imgur.com/qtcxs8w.png'
       description=''
       demonstration=''
       ==
   :*  id=[our.bowl 13]  name='Shrugs'      mode=%reps  equ=%bb
-      img=''
+      img='https://i.imgur.com/UBSbhRN.gif'
       description=''
       demonstration=''
       ==
   :*  id=[our.bowl 14]  name='Farmer Carry'  mode=%dist  equ=%db
-      img=''
+      img='https://i.imgur.com/Pl8YsCn.gif'
       description=''
       demonstration=''
       ==
   :*  id=[our.bowl 15]  name='Backward Farmer Carry'  mode=%dist  equ=%db
-      img=''
+      img='https://i.imgur.com/2YvVD6R.gif'
       description=''
       demonstration=''
       ==
   :*  id=[our.bowl 16]  name='Seated Good Morning'  mode=%reps  equ=%bb
-      img=''
+      img='https://i.imgur.com/vAnCTya.gif'
       description=''
       demonstration=''
       ==
   :*  id=[our.bowl 17]  name='Reverse Crunch'  mode=%reps  equ=%x
-      img=''
+      img='https://i.imgur.com/rTs3EAq.png'
       description=''
       demonstration=''
       ==
@@ -96,6 +96,11 @@
       ==
   :*  id=[our.bowl 19]  name='Straight-arm Horizontal Adduction'  mode=%reps  equ=%bd
       img='https://i.imgur.com/XJj26fv.jpg'
+      description=''
+      demonstration=''
+      ==
+  :*  id=[our.bowl 20]  name='Lateral Raises'  mode=%reps  equ=%db
+      img='https://i.imgur.com/LSiSpcp.gif'
       description=''
       demonstration=''
       ==
