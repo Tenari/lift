@@ -33,7 +33,7 @@
         %-  pairs
         :~  lifts+a+(turn lifts.workout enlift)
             start+(time start.workout)
-            end+(time end.workout)
+            end+?:(=(*@da end.workout) ~ (time end.workout))
         ==
     ++  en-exercises
       |=  =exercises
@@ -54,8 +54,7 @@
     ++  en-ex-id
       |=  =ex-id
       ^-  json
-      %-  pairs
-      ~[ship+s+(scot %p ship.ex-id) num+(numb num.ex-id)]
+      s+(spat [(scot %p ship.ex-id) (crip (en-json:html (numb num.ex-id))) ~])
     ++  enlift
       |=  =lift
       ^-  json
