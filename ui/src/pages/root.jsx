@@ -16,7 +16,7 @@ export function RootPage({history, api, refreshHistory, exercises}) {
   if (workout) {
     console.log(workout, addLift);
     return <div className="p-7 container mx-auto">
-      <Workout workout={workout} exercises={exercises}/>
+      <Workout workout={workout} exercises={exercises} edit={true} api={api} refreshHistory={refreshHistory}/>
       <div>
         <button className="bg-white rounded-md shadow-md p-1" onClick={() => setAddLift(!!addLift ? false : {} )}>Add lift</button>
         {addLift && <div className="bg-white m-1 p-1 rounded-md">

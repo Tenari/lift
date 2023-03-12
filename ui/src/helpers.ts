@@ -32,6 +32,16 @@ export async function addLiftToWorkout(api, id) {
   });
 }
 
+export async function addSetToLift(api, data) {
+  return await api.poke({
+    app: 'lift',
+    mark: 'lift-action',
+    json: {
+      "add-set": data,
+    },
+  });
+}
+
 export async function getAgentState(api) {
   const history = await api.scry({app: "lift", path: "/history"});
   const exercises = await api.scry({app: "lift", path: "/exercises"});

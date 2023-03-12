@@ -13,6 +13,7 @@
       :~  [%start-workout (se %p)]
           [%end-workout (se %p)]
           [%add-lift de-ex-id]
+          [%add-set index-and-set]
       ==
     ::
     ++  create-chat
@@ -30,6 +31,75 @@
       |=  p=path
       ^-  ex-id
       [`@p`(slav %p +2:p) `@ud`(rash +6:p dem)]
+    ::
+    ++  index-and-set
+      %-  ot
+      :~  [%index ni]
+          [%set de-set]
+      ==
+    ::
+    ++  de-set
+      %-  ot
+      :~  [%mode se-ex-mode]
+          [%reps ni]
+          [%weight ne]
+          [%weight-unit se-wu]
+          [%rir ni]
+          [%duration null-or-dri]
+          [%distance ne]
+          [%distance-unit se-du]
+          [%note so]
+      ==
+    ::
+    ++  se-ex-mode
+      %+  cu
+        |=  t=@tas
+        ^-  exercise-mode
+        ?+  t  !!
+          %reps  %reps
+          %hold  %hold
+          %dist  %dist
+        ==
+      (se %tas)
+    ::
+    ++  se-wu
+      %+  cu
+        |=  t=@tas
+        ^-  weight-unit
+        ?+  t  !!
+          %lbs  %lbs
+          %kg   %kg
+        ==
+      (se %tas)
+    ::
+    ++  se-du
+      %+  cu
+        |=  t=@tas
+        ^-  distance-unit
+        ?+  t  !!
+          %in   %in
+          %ft   %ft
+          %mi   %mi
+          %cm   %cm
+          %m    %m
+          %km   %km
+        ==
+      (se %tas)
+    ::
+    ++  dri   :: specify in integer milliseconds, returns a @dr
+      (cu |=(t=@ud ^-(@dr (div (mul ~s1 t) 1.000))) ni)
+    ::
+    ++  null-or-dri   :: specify in integer milliseconds, returns a @dr
+      (cu |=(t=@ud ^-(@dr (div (mul ~s1 t) 1.000))) null-or-ni)
+    ::
+    ++  null-or-ni  :: accepts either a null or a n+'123', and converts nulls to 0, non-null to the appropriate number
+      |=  jon=json
+      ^-  @ud
+      ?+  jon  !!
+        [%n *]  (rash p.jon dem)
+        ~       0
+      ==
+    ::
     --
   --
 ++  encode
@@ -84,7 +154,7 @@
           %-  pairs
           :~  type+s+%reps
               reps+(numb reps.set)
-              weight+n+(scot %rs weight.set)
+              weight+(numbrd weight.set)
               rir+(numb rir.set)
               weight-unit+s+weight-unit.set
               note+s+note.set
@@ -100,5 +170,11 @@
           :: TODO
           ==
       ==
+    ::
+    ++  numbrd
+      |=  a=@rd
+      ^-  json
+      :-  %n
+      (crip (flop (snip (snip (flop (trip (scot %rd a)))))))
     --
 --

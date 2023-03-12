@@ -15,16 +15,18 @@
 :: name and meta-data about a kind of thing you *could* actually do as a `lift`
 +$  exercise   [id=ex-id name=@t mode=exercise-mode equ=equipment-type img=@t description=@t demonstration=@t]
 +$  exercises  (list exercise)
-+$  detail
-  $%  [%text @t]
-      [%date @da]
-      [%amount @rs]
-  ==
 :: a lift is a record of an exercise you did during a workout
 +$  lift-set
-  $?  [%reps reps=@ud weight=@rs rir=@ud =weight-unit note=@t]
-      [%hold weight=(unit @rs) =weight-unit duration=@dr note=@t]
-      [%dist weight=(unit @rs) =weight-unit distance=@rs =distance-unit note=@t]
+  $:
+    mode=exercise-mode
+    reps=@ud
+    weight=@rd
+    =weight-unit
+    rir=@ud
+    duration=@dr
+    distance=@rd
+    =distance-unit
+    note=@t
   ==
 +$  lift      [id=ex-id sets=(list lift-set)]
 +$  workout   [lifts=(list lift) start=@da end=@da]

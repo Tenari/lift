@@ -19,6 +19,7 @@
 ++  on-load
   |=  old=vase
   ^-  (quip card _this)
+  =.  state   *state-0
   =.  exercises.state  (default-exercise-list:lift-exercises bowl)
   =.  defaults.state  [%lbs %mi]
   ::`this(state !<(state-0 old))
