@@ -1,50 +1,54 @@
 export const ongoingWorkout = (history) => {
   return history && history[0] && history[0].end === null ? history[0] : false;
 }
-export async function startNewWorkout(api) {
-  return await api.poke({
+const poke = async (data) => {
+  return await window.api.poke({
     app: 'lift',
     mark: 'lift-action',
-    json: {
-      "start-workout": "~"+api.ship,
-    },
+    json: data,
+  });
+};
+
+export async function startNewWorkout() {
+  return await poke({
+    "start-workout": "~"+window.api.ship,
   });
 }
 
-export async function endCurrentWorkout(api) {
-  return await api.poke({
-    app: 'lift',
-    mark: 'lift-action',
-    json: {
-      "end-workout": "~"+api.ship,
-    },
+export async function endCurrentWorkout() {
+  return await poke({
+    "end-workout": "~"+window.api.ship,
   });
 }
 
-
-export async function addLiftToWorkout(api, id) {
-  return await api.poke({
-    app: 'lift',
-    mark: 'lift-action',
-    json: {
-      "add-lift": id,
-    },
+export async function addLiftToWorkout(id) {
+  return await poke({
+    "add-lift": id,
   });
 }
 
-export async function addSetToLift(api, data) {
-  return await api.poke({
-    app: 'lift',
-    mark: 'lift-action',
-    json: {
-      "add-set": data,
-    },
+export async function addSetToLift(data) {
+  return await poke({
+    "add-set": data,
   });
 }
 
-export async function getAgentState(api) {
-  const history = await api.scry({app: "lift", path: "/history"});
-  const exercises = await api.scry({app: "lift", path: "/exercises"});
+export async function editExercise(data) {
+  return await poke({
+    "edit-exercise": data,
+  });
+}
+
+export async function addExercise(data) {
+  data.id = "/~zod/0"; // this will be generate by hoon so we just overwrite to some valid value
+  return await poke({
+    "add-exercise": data,
+  });
+}
+
+export async function getAgentState() {
+  const history = await window.api.scry({app: "lift", path: "/history"});
+  const exercises = await window.api.scry({app: "lift", path: "/exercises"});
   return {history, exercises};
 }
 

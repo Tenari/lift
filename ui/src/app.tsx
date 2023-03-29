@@ -8,6 +8,7 @@ import { getAgentState } from './helpers';
 
 const api = new Urbit('', '', window.desk);
 api.ship = window.ship;
+window.api = api;
 
 export function App() {
   const [page, setPage] = useState('root');
@@ -16,7 +17,7 @@ export function App() {
 
   useEffect(() => {
     async function init() {
-      const { history, exercises } = await getAgentState(api);
+      const { history, exercises } = await getAgentState();
       setHist(history);
       setExercises(exercises);
     }
@@ -28,11 +29,15 @@ export function App() {
     const h = await api.scry({app: "lift", path: "/history"});
     setHist(h);
   }
+  async function refreshExercises() {
+    const e = await api.scry({app: "lift", path: "/exercises"});
+    setExercises(e);
+  }
   if (!hist && !exercises) return <p>Loading...</p>;
 
   const PAGES = {
-    'root': () => <RootPage api={api} history={hist} refreshHistory={refreshHistory} exercises={exercises}/>,
-    'exercises': () => <ExercisesPage exercises={exercises}/>,
+    'root': () => <RootPage history={hist} refreshHistory={refreshHistory} exercises={exercises}/>,
+    'exercises': () => <ExercisesPage exercises={exercises} refreshExercises={refreshExercises} />,
     'history': () => <HistoryPage history={hist} exercises={exercises}/>,
   }
 

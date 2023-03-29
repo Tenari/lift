@@ -10,7 +10,8 @@
     default  ~(. (default-agent this %|) bowl)
 ++  on-init
   ^-  (quip card _this)
-  =.  exercises.state  (default-exercise-list:lift-exercises bowl)
+  =.  exercises.state   (default-exercises:lift-exercises bowl)
+  =.  next-ex-id.state  100 :: TODO actually tie to default-exercises count
   =.  defaults.state  [%lbs %mi]
   :_  this
   :~  [%pass /eyre/connect %arvo %e %connect `/apps/lift %lift]
@@ -20,7 +21,8 @@
   |=  old=vase
   ^-  (quip card _this)
   =.  state   *state-0
-  =.  exercises.state  (default-exercise-list:lift-exercises bowl)
+  =.  exercises.state  (default-exercises:lift-exercises bowl)
+  =.  next-ex-id.state  100 :: TODO actually tie to default-exercises count
   =.  defaults.state  [%lbs %mi]
   ::`this(state !<(state-0 old))
   `this(state state)
@@ -44,6 +46,10 @@
       (add-lift:pokes +.act state bowl)
     %add-set
       (add-set:pokes +.act state bowl)
+    %edit-exercise
+      (edit-exercise:pokes +.act state bowl)
+    %add-exercise
+      (add-exercise:pokes +.act state bowl)
   ==
   [cards this]
 ::

@@ -4,7 +4,7 @@
   $%  state-0
   ==
 +$  state-0
-  $:  [%0 =history =exercises defaults=[=weight-unit =distance-unit]]
+  $:  [%0 =history =exercises defaults=[=weight-unit =distance-unit] next-ex-id=@ud]
   ==
 +$  ex-id           [=ship num=@ud]
 +$  weight-unit     ?(%lbs %kg)
@@ -14,7 +14,7 @@
 +$  equipment-type  ?(%bb %db %kb %bd %x %ot)
 :: name and meta-data about a kind of thing you *could* actually do as a `lift`
 +$  exercise   [id=ex-id name=@t mode=exercise-mode equ=equipment-type img=@t description=@t demonstration=@t]
-+$  exercises  (list exercise)
++$  exercises  (map ex-id exercise)
 :: a lift is a record of an exercise you did during a workout
 +$  lift-set
   $:
@@ -36,9 +36,10 @@
       [%end-workout target=@p]
       [%add-lift =ex-id]
       [%add-set index=@ud =lift-set] :: index is the lift index within the lifts.workout list
+      [%edit-exercise =exercise]
+      [%add-exercise =exercise]  :: input id is overwritten
 ::      [%edit-lift target=@p =lift]
 ::      [%remove-lift target=@p]
-::      [%add-exercise target=@p]
 ::      [%remove-exercise target=@p]
   ==
 --

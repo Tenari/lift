@@ -14,12 +14,19 @@
           [%end-workout (se %p)]
           [%add-lift de-ex-id]
           [%add-set index-and-set]
+          [%add-exercise de-exercise]
+          [%edit-exercise de-exercise]
       ==
     ::
-    ++  create-chat
+    ++  de-exercise
       %-  ot
-      :~  [%metadata (om so)]
-          [%type (se %tas)]
+      :~  [%id de-ex-id]
+          [%name so]
+          [%mode se-ex-mode]
+          [%equ se-eq-type]
+          [%img so]
+          [%description so]
+          [%demonstration so]
       ==
     ::
     ++  de-ex-id
@@ -86,6 +93,20 @@
         ==
       (se %tas)
     ::
+    ++  se-eq-type
+      %+  cu
+        |=  t=@tas
+        ^-  equipment-type
+        ?+  t  !!
+          %bb   %bb
+          %db   %db
+          %kb   %kb
+          %bd   %bd
+          %x    %x
+          %ot   %ot
+        ==
+      (se %tas)
+    ::
     ++  dri   :: specify in integer milliseconds, returns a @dr
       (cu |=(t=@ud ^-(@dr (div (mul ~s1 t) 1.000))) ni)
     ::
@@ -122,14 +143,14 @@
       |=  =exercises
       ^-  json
       :-  %a
-      %+  turn  exercises
+      %+  turn  ~(val by exercises)
         |=  =exercise
         ^-  json
         %-  pairs
         :~  id+(en-ex-id id.exercise)
             name+s+name.exercise
             mode+s+mode.exercise
-            equipment+s+equ.exercise
+            equ+s+equ.exercise
             img+s+img.exercise
             description+s+description.exercise
             demonstration+s+demonstration.exercise

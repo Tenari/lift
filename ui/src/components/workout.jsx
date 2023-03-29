@@ -3,7 +3,7 @@ import { addSetToLift } from '../helpers';
 
 const btnC = " bg-green-200 disabled:bg-gray-400 rounded-md shadow-md p-1 diabled:cursor-not-allowed ";
 
-export function Workout({workout, exercises, edit, api, refreshHistory}) {
+export function Workout({workout, exercises, edit, refreshHistory}) {
   const [addingSet, setAddingSet] = React.useState(false);
   const [reps, setReps] = React.useState(0);
   const [weight, setWeight] = React.useState(0);
@@ -37,7 +37,7 @@ export function Workout({workout, exercises, edit, api, refreshHistory}) {
             <div>weight: <input type="number" value={weight} onChange={(e) => setWeight(parseFloat(e.target.value))}/></div>
             <button className={btnC} onClick={async () => {
               setEditing(true);
-              await addSetToLift(api, {
+              await addSetToLift({
                 index: liftIndex,
                 set: {
                   mode: 'reps',
