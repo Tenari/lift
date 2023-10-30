@@ -47,8 +47,9 @@ export async function addExercise(data) {
 }
 
 export async function getAgentState() {
+  const plans = await window.api.scry({app: "lift", path: "/plans"});
   const history = await window.api.scry({app: "lift", path: "/history"});
   const exercises = await window.api.scry({app: "lift", path: "/exercises"});
-  return {history, exercises};
+  return {history, exercises, plans};
 }
 

@@ -65,4 +65,10 @@
   =.  exercises.state     (~(put by exercises.state) id new-ex)
   =.  next-ex-id.state    +(next-ex-id.state)
   [~ state]
+++  add-plan
+::lift &lift-action [%add-plan %session 'leg day' [[~zod 2] 3 6 .~0.0 2 .~5.0 %linear 0]~]
+  |=  [=plan state=state-0 =bowl:gall]
+  ^-  (quip card state-0)
+  =.  plans.state    [plan plans.state]
+  [~ state]
 --

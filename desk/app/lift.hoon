@@ -13,9 +13,7 @@
   =.  exercises.state   (default-exercises:lift-exercises bowl)
   =.  next-ex-id.state  100 :: TODO actually tie to default-exercises count
   =.  defaults.state  [%lbs %mi]
-  :_  this
-  :~  [%pass /eyre/connect %arvo %e %connect `/apps/lift %lift]
-  ==
+  `this
 ++  on-save   !>(state)
 ++  on-load
   |=  old=vase
@@ -50,6 +48,8 @@
       (edit-exercise:pokes +.act state bowl)
     %add-exercise
       (add-exercise:pokes +.act state bowl)
+    %add-plan
+      (add-plan:pokes +.act state bowl)
   ==
   [cards this]
 ::
@@ -61,6 +61,8 @@
       ``history+!>(history)
     [%x %exercises ~]
       ``exercises+!>(exercises)
+    [%x %plans ~]
+      ``plans+!>(plans)
   ==
 ++  on-arvo   on-arvo:default
 ++  on-watch

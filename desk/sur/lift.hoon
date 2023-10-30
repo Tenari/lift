@@ -4,7 +4,12 @@
   $%  state-0
   ==
 +$  state-0
-  $:  [%0 =history =exercises defaults=[=weight-unit =distance-unit] next-ex-id=@ud]
+  $:  %0
+      =history
+      =exercises
+      next-ex-id=@ud
+      =plans
+      defaults=[=weight-unit =distance-unit]
   ==
 +$  ex-id           [=ship num=@ud]
 +$  weight-unit     ?(%lbs %kg)
@@ -31,6 +36,23 @@
 +$  lift      [id=ex-id sets=(list lift-set)]
 +$  workout   [lifts=(list lift) start=@da end=@da]
 +$  history   (list workout)
+::
++$  plans     (list plan)
++$  plan
+  $%
+    [%program =program]
+    [%session session=session-plan]
+  ==
++$  program   (list day-plan)
++$  day-plan
+  $%
+    [%rest ~]
+    [%sessions sessions=(list session-plan)]
+  ==
++$  session-plan  [name=@t exercises=(list planned-exercise)]
+:: weight increase being set means it's dynamically calculated from your last use of that exercise
+:: rep increase being set means it's dynamically calculated from your last use of that exercise
++$  planned-exercise    [=ex-id sets=@ud reps=@ud weight=@rd rir=@ud weight-increase=@rd weight-increase-mode=?(%linear %relative) rep-increase=@ud] 
 +$  action
   $%  [%start-workout target=@p]
       [%end-workout target=@p]
@@ -38,7 +60,7 @@
       [%add-set index=@ud =lift-set] :: index is the lift index within the lifts.workout list
       [%edit-exercise =exercise]
       [%add-exercise =exercise]  :: input id is overwritten
-::      [%edit-lift target=@p =lift]
+      [%add-plan =plan]
 ::      [%remove-lift target=@p]
 ::      [%remove-exercise target=@p]
   ==

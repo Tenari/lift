@@ -16,6 +16,41 @@
           [%add-set index-and-set]
           [%add-exercise de-exercise]
           [%edit-exercise de-exercise]
+          [%add-plan de-plan]
+      ==
+    ::
+    ++  de-plan
+      %-  of
+      :~  [%program de-program]
+          [%session de-session-plan]
+      ==
+    ::
+    ++  de-program
+      %-  ar
+      day-plan-out
+    ::
+    ++  day-plan-out
+      %-  of
+      :~  [%rest ul]
+          [%sessions (ar de-session-plan)]
+      ==
+    ::
+    ++  de-session-plan
+      %-  ot
+      :~  [%name so]
+          [%exercises (ar de-planned-exercise)]
+      ==
+    ::
+    ++  de-planned-exercise
+      %-  ot
+      :~  [%ex-id de-ex-id]
+          [%sets ni]
+          [%reps ni]
+          [%weight ne]
+          [%rir ni]
+          [%weight-increase ne]
+          [%weight-increase-mode se-w-inc-mode]
+          [%rep-increase ni]
       ==
     ::
     ++  de-exercise
@@ -57,6 +92,16 @@
           [%distance-unit se-du]
           [%note so]
       ==
+    ::
+    ++  se-w-inc-mode
+      %+  cu
+        |=  t=@tas
+        ^-  ?(%linear %relative)
+        ?+  t  !!
+          %linear    %linear
+          %relative  %relative
+        ==
+      (se %tas)
     ::
     ++  se-ex-mode
       %+  cu
@@ -126,6 +171,18 @@
 ++  encode
   =,  enjs:format
   |%
+    ++  en-plans
+      |=  =plans
+      ^-  json
+      :-  %a
+      %+  turn  plans
+        |=  =plan
+        ^-  json
+        ?-  -.plan
+          %program    (en-program +.plan)
+          %session    (en-session-plan +.plan)
+        ==
+    ::
     ++  en-workouts
       |=  =history
       ^-  json
@@ -160,6 +217,36 @@
       |=  =ex-id
       ^-  json
       s+(spat [(scot %p ship.ex-id) (crip (en-json:html (numb num.ex-id))) ~])
+    ++  en-program
+      |=  =program
+      ^-  json
+      :-  %a
+      %+  turn  program
+        |=  =day-plan
+        ?-  -.day-plan
+          %rest  ~
+          %sessions  a+(turn sessions.day-plan en-session-plan)
+        ==
+    ++  en-session-plan
+      |=  sesh=session-plan
+      ^-  json
+      %-  pairs
+      :~  name+s+name.sesh
+          exercises+a+(turn exercises.sesh en-planned-exercise)
+      ==
+    ++  en-planned-exercise
+      |=  p=planned-exercise
+      ^-  json
+      %-  pairs
+      :~  id+(en-ex-id ex-id.p)
+          sets+(numb sets.p)
+          reps+(numb sets.p)
+          weight+(numbrd weight.p)
+          rir+(numb rir.p)
+          weight-increase+(numbrd weight-increase.p)
+          weight-increase-mode+s+weight-increase-mode.p
+          rep-increase+(numb rep-increase.p)
+      ==
     ++  enlift
       |=  =lift
       ^-  json
